@@ -18,7 +18,8 @@ import {
   Calendar as CalendarIcon,
   Save,
   CheckCircle2,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Car
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -52,7 +53,7 @@ import { ImageUploader, MultiImageUploader } from "./image-uploader";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  category: z.enum(["statue", "figure"]),
+  category: z.enum(["statue", "figure", "hotwheel"]),
   // Basic Info
   artist_name: z.string().optional(),
   manufacturer: z.string().optional(),
@@ -89,6 +90,17 @@ const formSchema = z.object({
   gallery_urls: z.array(z.string()).default([]),
   // Notes
   notes: z.string().optional(),
+  // Hot Wheels Specific
+  model_name: z.string().optional(),
+  series: z.string().optional(),
+  year: z.coerce.number().nullable().optional(),
+  color: z.string().optional(),
+  tampo_print: z.string().optional(),
+  wheel_type: z.string().optional(),
+  condition: z.string().optional(),
+  blister_condition: z.string().optional(),
+  toy_number: z.string().optional(),
+  is_treasure_hunt: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -97,7 +109,7 @@ interface CollectibleFormProps {
   initialData?: {
     id?: string;
     name?: string;
-    category?: "statue" | "figure";
+    category?: "statue" | "figure" | "hotwheel";
     purchase_date?: string;
     cost_price?: number;
     current_value?: number;
@@ -152,6 +164,16 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
       edition: initialData.properties?.edition ?? "",
       art_style: initialData.properties?.art_style ?? "",
       pose: initialData.properties?.pose ?? "",
+      model_name: initialData.properties?.model_name ?? "",
+      series: initialData.properties?.series ?? "",
+      year: initialData.properties?.year ?? null,
+      color: initialData.properties?.color ?? "",
+      tampo_print: initialData.properties?.tampo_print ?? "",
+      wheel_type: initialData.properties?.wheel_type ?? "",
+      condition: initialData.properties?.condition ?? "Carded Mint",
+      blister_condition: initialData.properties?.blister_condition ?? "Unpunched",
+      toy_number: initialData.properties?.toy_number ?? "",
+      is_treasure_hunt: initialData.properties?.is_treasure_hunt ?? false,
       scale: initialData.properties?.scale ?? "",
       material: initialData.properties?.material ?? "",
       height_cm: initialData.properties?.height_cm ?? null,
@@ -183,6 +205,16 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
       edition: "",
       art_style: "",
       pose: "",
+      model_name: "",
+      series: "",
+      year: null,
+      color: "",
+      tampo_print: "",
+      wheel_type: "",
+      condition: "Carded Mint",
+      blister_condition: "Unpunched",
+      toy_number: "",
+      is_treasure_hunt: false,
       scale: "",
       material: "",
       height_cm: null,
@@ -206,6 +238,8 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
       notes: "",
     }) as any,
   });
+
+  const category = form.watch("category");
 
   const toggleSection = (section: string) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -282,7 +316,7 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
           <p className="text-muted-foreground">Select a category to get started.</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card 
             data-testid="category-card-statue"
             className="group cursor-pointer hover:border-coral transition-all duration-300 overflow-hidden"
@@ -316,6 +350,23 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
               <p className="text-muted-foreground">PVC, ABS, or Action figures with articulation.</p>
             </CardContent>
           </Card>
+
+          <Card 
+            data-testid="category-card-hotwheel"
+            className="group cursor-pointer hover:border-midnight transition-all duration-300 overflow-hidden"
+            onClick={() => {
+              form.setValue("category", "hotwheel");
+              setStep(1);
+            }}
+          >
+            <CardContent className="p-10 flex flex-col items-center justify-center text-center">
+              <div className="mb-6 rounded-full bg-midnight/10 p-6 text-midnight group-hover:bg-midnight group-hover:text-white transition-all duration-300">
+                <Car className="h-12 w-12" />
+              </div>
+              <h2 className="text-2xl font-bold font-heading mb-2">Hot Wheels</h2>
+              <p className="text-muted-foreground">Mattel die-cast cars, Treasure Hunts, and more.</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
@@ -326,7 +377,7 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-heading font-bold text-midnight dark:text-white">
-            {isEdit ? "Edit Collectible" : `Add ${form.getValues("category") === "statue" ? "Statue" : "Figure"}`}
+            {isEdit ? "Edit Collectible" : `Add ${form.getValues("category") === "statue" ? "Statue" : form.getValues("category") === "figure" ? "Figure" : "Hot Wheels"}`}
           </h1>
           <p className="text-muted-foreground">Fill in the details below to catalog your item.</p>
         </div>
@@ -409,6 +460,61 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
                 )}
               />
             </div>
+            
+            {category === 'hotwheel' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-dashed">
+                <FormField
+                  control={form.control}
+                  name="model_name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Model Name</FormLabel>
+                      <FormControl><Input placeholder="e.g. Custom '69 Chevy Pickup" {...field} /></FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="series"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Hot Wheels Series</FormLabel>
+                      <FormControl><Input placeholder="e.g. HW Hot Trucks" {...field} /></FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="year"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Year</FormLabel>
+                      <FormControl><Input type="number" placeholder="e.g. 2025" {...field} value={field.value || ''} /></FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="color"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Color</FormLabel>
+                      <FormControl><Input placeholder="e.g. Matte Black" {...field} /></FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="tampo_print"
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel>Tampo / Print Details</FormLabel>
+                      <FormControl><Input placeholder="e.g. Flames on hood" {...field} /></FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </CollapsibleSection>
 
           {/* Physical Details */}
@@ -497,6 +603,30 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
                 />
               </div>
             </div>
+
+            {category === 'hotwheel' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-dashed">
+                <FormField
+                  control={form.control}
+                  name="wheel_type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Wheel Type</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger><SelectValue placeholder="Select wheels" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {["5SP", "Real Riders", "PR5", "10SP", "OH5", "Aero", "Other"].map(w => (
+                            <SelectItem key={w} value={w}>{w}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </CollapsibleSection>
 
           {/* Edition & Rarity */}
@@ -534,6 +664,36 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
                 )}
               />
             </div>
+
+            {category === 'hotwheel' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-dashed">
+                <FormField
+                  control={form.control}
+                  name="toy_number"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Toy Number</FormLabel>
+                      <FormControl><Input placeholder="e.g. HTF56" {...field} /></FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="is_treasure_hunt"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-lg border p-4 shadow-sm bg-midnight/5">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-teal font-bold">Treasure Hunt</FormLabel>
+                        <FormDescription>Is this a TH or Super TH?</FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </CollapsibleSection>
 
           {/* Provenance & Value */}
@@ -679,6 +839,49 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
                 )}
               />
             </div>
+
+            {category === 'hotwheel' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-dashed">
+                <FormField
+                  control={form.control}
+                  name="condition"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Overall Condition</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger><SelectValue placeholder="Select condition" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {["Carded Mint", "Carded Near Mint", "Loose Mint", "Loose Worn"].map(c => (
+                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="blister_condition"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Blister / Card Condition</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger><SelectValue placeholder="Select blister condition" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {["Unpunched", "Punched", "None (Loose)"].map(c => (
+                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </CollapsibleSection>
 
           {/* Media */}

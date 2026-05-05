@@ -210,12 +210,53 @@ export default async function ItemPage({
                 <>
                   <Separator />
                   <div className="grid grid-cols-2 gap-y-3 gap-x-4">
-                    {Object.entries(item.properties).map(([key, value]) => (
-                      <div key={key} className="text-sm">
-                        <span className="text-muted-foreground capitalize">{key.replace(/_/g, " ")}:</span>
-                        <span className="ml-2 font-medium">{String(value)}</span>
-                      </div>
-                    ))}
+                    {item.category === "hotwheel" ? (
+                      <>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Model:</span>
+                          <span className="ml-2 font-medium">{item.properties.model_name || "N/A"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Series:</span>
+                          <span className="ml-2 font-medium">{item.properties.series || "N/A"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Year:</span>
+                          <span className="ml-2 font-medium">{item.properties.year || "N/A"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Scale:</span>
+                          <span className="ml-2 font-medium">{item.properties.scale || "1:64"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Color:</span>
+                          <span className="ml-2 font-medium">{item.properties.color || "N/A"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Wheels:</span>
+                          <span className="ml-2 font-medium">{item.properties.wheel_type || "N/A"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Toy #:</span>
+                          <span className="ml-2 font-medium">{item.properties.toy_number || "N/A"}</span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Treasure Hunt:</span>
+                          <span className="ml-2">
+                            {item.properties.is_treasure_hunt ? (
+                              <Badge className="bg-teal text-white border-none text-[10px] h-4">YES</Badge>
+                            ) : "No"}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      Object.entries(item.properties).map(([key, value]) => (
+                        <div key={key} className="text-sm">
+                          <span className="text-muted-foreground capitalize">{key.replace(/_/g, " ")}:</span>
+                          <span className="ml-2 font-medium">{String(value)}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </>
               )}

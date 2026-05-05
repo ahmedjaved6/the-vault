@@ -83,17 +83,36 @@ export function ShareableCard({ item }: ShareableCardProps) {
           </h1>
           
           <div className="flex flex-wrap gap-4 text-white/80 text-sm mb-4">
-            {properties.art_style && (
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Art Style</span>
-                <span className="font-medium">{properties.art_style}</span>
-              </div>
-            )}
-            {properties.pose && (
-              <div className="flex flex-col">
-                <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Pose</span>
-                <span className="font-medium">{properties.pose}</span>
-              </div>
+            {item.category === "hotwheel" ? (
+              <>
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Series</span>
+                  <span className="font-medium">{properties.series || "Hot Wheels"}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Year</span>
+                  <span className="font-medium">{properties.year || "N/A"}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Scale</span>
+                  <span className="font-medium">{properties.scale || "1:64"}</span>
+                </div>
+              </>
+            ) : (
+              <>
+                {properties.art_style && (
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Art Style</span>
+                    <span className="font-medium">{properties.art_style}</span>
+                  </div>
+                )}
+                {properties.pose && (
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase opacity-60 tracking-wider font-bold">Pose</span>
+                    <span className="font-medium">{properties.pose}</span>
+                  </div>
+                )}
+              </>
             )}
           </div>
 

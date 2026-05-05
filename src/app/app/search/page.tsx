@@ -142,6 +142,7 @@ export default function SearchPage() {
                     <SelectItem value="all">All Categories</SelectItem>
                     <SelectItem value="statue">Statues</SelectItem>
                     <SelectItem value="figure">Figures</SelectItem>
+                    <SelectItem value="hotwheel">Hot Wheels</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

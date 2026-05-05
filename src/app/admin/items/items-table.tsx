@@ -151,7 +151,7 @@ export function ItemsTable({ initialItems }: { initialItems: any[] }) {
                       <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuLabel>Item Moderation</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => router.push(`/app/${item.id}`)}>
+                        <DropdownMenuItem onClick={() => router.push(`/app/items/${item.id}`)}>
                           <Eye className="mr-2 h-4 w-4" />
                           View Details
                         </DropdownMenuItem>
@@ -178,7 +178,7 @@ export function ItemsTable({ initialItems }: { initialItems: any[] }) {
             </AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to delete <strong>{deletingItem?.name}</strong>? 
-              This will remove the item from <strong>{deletingItem?.profiles?.email}</strong>'s vault permanently.
+              This will remove the item from <strong>{deletingItem?.profiles?.email}</strong>&apos;s vault permanently.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

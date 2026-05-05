@@ -1,0 +1,11 @@
+
+> the-vault@0.1.0 test:dev D:\the-vault
+> next dev --webpack -p 5678 -H 127.0.0.1
+
+▲ Next.js 16.2.4 (webpack)
+- Local:         http://127.0.0.1:5678
+- Network:       http://127.0.0.1:5678
+- Environments: .env.local
+✓ Ready in 824ms
+[?25h
+ ELIFECYCLE  Command failed with exit code 1.

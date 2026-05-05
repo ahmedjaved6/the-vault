@@ -10,21 +10,39 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  let profile = null;
 
-  if (!user) {
-    redirect("/signin");
+  try {
+    const supabase = await createClient();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    user = authUser;
+
+    if (user) {
+      const { data: userProfile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+      profile = userProfile;
+    }
+  } catch (error) {
+    return (
+      <div className="flex h-screen items-center justify-center p-4">
+        <div className="text-center space-y-4">
+          <h1 className="text-2xl font-bold text-destructive">Configuration Error</h1>
+          <p className="text-muted-foreground">The application environment is not correctly configured. Please check your Supabase variables.</p>
+        </div>
+      </div>
+    );
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
+  if (!user) {
+    redirect("/auth/signin");
+  }
 
   if (profile?.role !== "admin") {
-    redirect("/");
+    redirect("/app");
   }
 
   return (

@@ -36,10 +36,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Add", href: "/add", icon: PlusCircle },
-  { name: "Portfolio", href: "/portfolio", icon: Briefcase },
-  { name: "Search", href: "/search", icon: Search },
-  { name: "Profile", href: "/profile", icon: User },
+  { name: "Add", href: "/app/add", icon: PlusCircle },
+  { name: "Portfolio", href: "/app/portfolio", icon: Briefcase },
+  { name: "Search", href: "/app/search", icon: Search },
+  { name: "Profile", href: "/app/profile", icon: User },
 ];
 
 export function AppSidebar() {
@@ -50,7 +50,7 @@ export function AppSidebar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/signin");
+    router.push("/auth/signin");
   };
 
   return (
@@ -125,10 +125,10 @@ export function AppSidebar() {
 
           <div className="flex flex-col gap-1">
             <Link
-              href="/settings"
+              href="/app/settings"
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-midnight dark:hover:text-white hover:bg-muted",
-                pathname === "/settings" && "bg-muted text-coral font-medium",
+                pathname === "/app/settings" && "bg-muted text-coral font-medium",
                 isCollapsed && "justify-center px-2"
               )}
             >

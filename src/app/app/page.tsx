@@ -123,7 +123,7 @@ export default function Home() {
           <h1 className="text-3xl font-heading font-bold text-midnight dark:text-white">
             Welcome back, {session?.user?.user_metadata?.full_name?.split(' ')[0] || 'Collector'}!
           </h1>
-          <p className="text-muted-foreground mt-1">Here's what's happening in your vault today.</p>
+          <p className="text-muted-foreground mt-1">Here&apos;s what&apos;s happening in your vault today.</p>
         </div>
         
         <DropdownMenu>
@@ -233,7 +233,7 @@ export default function Home() {
             Start cataloging your collectibles to track their value and manage your portfolio.
           </p>
           <Button asChild className="mt-8 bg-midnight text-white hover:bg-midnight/90 dark:bg-white dark:text-midnight">
-            <Link href="/add">
+            <Link href="/app/add">
               <PlusCircle className="mr-2 h-4 w-4" />
               Add your first collectible
             </Link>
@@ -244,7 +244,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-heading font-bold text-midnight dark:text-white">Recently Added</h2>
             <Button variant="ghost" asChild className="text-coral hover:text-coral hover:bg-coral/5">
-              <Link href="/collectibles" className="flex items-center">
+              <Link href="/app/collectibles" className="flex items-center">
                 View all <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

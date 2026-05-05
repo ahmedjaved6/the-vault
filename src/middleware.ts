@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export default async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -31,24 +31,17 @@ export default async function proxy(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
-  // 1. If user is NOT logged in and trying to access the app (root) or admin
-  if (!user && (path === "/" || path.startsWith("/admin"))) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+  // Protect /app and /admin
+  if (!user && (path.startsWith("/app") || path.startsWith("/admin"))) {
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
-  // 2. If user IS logged in and trying to access auth pages (except callback)
-  const isAuthPage = [
-    "/signin",
-    "/signup",
-    "/forgot-password",
-    "/update-password",
-    "/magic-link",
-  ].includes(path);
-  if (user && isAuthPage) {
-    return NextResponse.redirect(new URL("/", request.url));
+  // Redirect authenticated users away from /auth
+  if (user && path.startsWith("/auth") && !path.includes("/auth/callback")) {
+    return NextResponse.redirect(new URL("/app", request.url));
   }
 
-  // 3. Admin protection
+  // Admin protection
   if (path.startsWith("/admin")) {
     const { data: profile } = await supabase
       .from("profiles")
@@ -57,7 +50,7 @@ export default async function proxy(request: NextRequest) {
       .single();
 
     if (profile?.role !== "admin") {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/app", request.url));
     }
   }
 
@@ -65,13 +58,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/signin",
-    "/signup",
-    "/forgot-password",
-    "/update-password",
-    "/magic-link",
-    "/admin/:path*",
-  ],
+  matcher: ["/app/:path*", "/auth/:path*", "/admin/:path*"],
 };

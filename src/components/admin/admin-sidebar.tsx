@@ -64,7 +64,7 @@ export function AdminSidebar() {
         <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
           <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mb-2">Controls</p>
           <div className="space-y-1">
-            <Link href="/" className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors py-2">
+            <Link href="/app" className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors py-2">
               <ArrowLeft className="h-4 w-4" />
               Exit to Collector App
             </Link>

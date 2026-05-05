@@ -94,7 +94,18 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface CollectibleFormProps {
-  initialData?: any;
+  initialData?: {
+    id?: string;
+    name?: string;
+    category?: "statue" | "figure";
+    purchase_date?: string;
+    cost_price?: number;
+    current_value?: number;
+    notes?: string;
+    image_url?: string;
+    gallery_urls?: string[];
+    properties?: Record<string, any>;
+  };
   isEdit?: boolean;
 }
 
@@ -251,12 +262,13 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
           .single();
         if (error) throw error;
         toast.success("Collectible added to your vault!");
-        router.push(`/app/${inserted.id}`);
+        router.push(`/app/items/${inserted.id}`);
         return;
       }
-      router.push(`/app/${initialData.id}`);
-    } catch (error: any) {
-      toast.error(error.message);
+      router.push(`/app/items/${initialData?.id}`);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -760,7 +772,13 @@ export function CollectibleForm({ initialData, isEdit }: CollectibleFormProps) {
   );
 }
 
-function CollapsibleSection({ title, icon, children, open, onToggle }: any) {
+function CollapsibleSection({ title, icon, children, open, onToggle }: {
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  open: boolean;
+  onToggle: () => void;
+}) {
   return (
     <Collapsible open={open} onOpenChange={onToggle} className="border rounded-xl bg-card overflow-hidden transition-all duration-200">
       <CollapsibleTrigger asChild>

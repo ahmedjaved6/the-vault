@@ -190,7 +190,8 @@ export default function PortfolioPage() {
                 />
                 <Tooltip 
                   contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
-                  formatter={(value: any) => [`$${value.toLocaleString()}`, "Value"]}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  formatter={(value: any) => [`$${value?.toLocaleString()}`, "Value"]}
                 />
                 <Area 
                   type="monotone" 
@@ -231,7 +232,8 @@ export default function PortfolioPage() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  formatter={(value: any) => [`$${value.toLocaleString()}`, "Value"]}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  formatter={(value: any) => [`$${value?.toLocaleString()}`, "Value"]}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -273,7 +275,7 @@ export default function PortfolioPage() {
               <tbody className="divide-y">
                 {stats.topItems.map((item) => {
                   const itemProfit = (item.current_value || item.cost_price || 0) - (item.cost_price || 0);
-                  const itemRoi = item.cost_price > 0 ? (itemProfit / item.cost_price) * 100 : 0;
+                  const itemRoi = item.cost_price && item.cost_price > 0 ? (itemProfit / item.cost_price) * 100 : 0;
                   return (
                     <tr key={item.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-6 py-4 font-bold text-midnight dark:text-white">

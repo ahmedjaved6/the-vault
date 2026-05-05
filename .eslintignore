@@ -1,0 +1,8 @@
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+test-results/
+playwright-report/
+.next/
+node_modules/
+dist/

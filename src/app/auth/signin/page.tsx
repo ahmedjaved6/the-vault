@@ -77,7 +77,7 @@ export default function SignInPage() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -87,7 +87,7 @@ export default function SignInPage() {
         description: error.message,
       });
     } else {
-      router.push("/magic-link");
+      router.push("/auth/magic-link");
     }
   }
 
@@ -95,7 +95,7 @@ export default function SignInPage() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/callback`,
+        redirectTo: `${window.location.origin}/auth/callback`,
         skipBrowserRedirect: true,
       },
     });
@@ -195,10 +195,10 @@ export default function SignInPage() {
           </Button>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
-          <Link href="/signup" className="hover:text-midnight dark:hover:text-white underline underline-offset-4">
-            Don't have an account? Sign Up
+          <Link href="/auth/signup" className="hover:text-midnight dark:hover:text-white underline underline-offset-4">
+            Don&apos;t have an account? Sign Up
           </Link>
-          <Link href="/forgot-password" className="hover:text-midnight dark:hover:text-white underline underline-offset-4">
+          <Link href="/auth/forgot-password" className="hover:text-midnight dark:hover:text-white underline underline-offset-4">
             Forgot password?
           </Link>
         </CardFooter>

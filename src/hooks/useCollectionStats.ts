@@ -1,9 +1,27 @@
-"use client";
-
 import { useMemo } from "react";
-import { startOfMonth, format, subMonths, isAfter } from "date-fns";
+import { format } from "date-fns";
 
-export function useCollectionStats(items: any[]) {
+interface Collectible {
+  id: string;
+  name: string;
+  category: string;
+  purchase_date: string;
+  cost_price: number | null;
+  current_value: number | null;
+  properties?: Record<string, unknown>;
+}
+
+interface ChartData {
+  date: string;
+  value: number;
+}
+
+interface BreakdownData {
+  name: string;
+  value: number;
+}
+
+export function useCollectionStats(items: Collectible[]) {
   return useMemo(() => {
     const totalValue = items.reduce((acc, item) => acc + (item.current_value || item.cost_price || 0), 0);
     const totalInvestment = items.reduce((acc, item) => acc + (item.cost_price || 0), 0);
@@ -11,12 +29,11 @@ export function useCollectionStats(items: any[]) {
     const roi = totalInvestment > 0 ? (profitLoss / totalInvestment) * 100 : 0;
 
     // Chart Data: Value over time
-    // We'll group by month and create a cumulative sum
     const sortedByDate = [...items]
       .filter(i => i.purchase_date)
       .sort((a, b) => new Date(a.purchase_date).getTime() - new Date(b.purchase_date).getTime());
 
-    const valueOverTime: any[] = [];
+    const valueOverTime: ChartData[] = [];
     let runningTotal = 0;
     
     sortedByDate.forEach(item => {
@@ -32,23 +49,23 @@ export function useCollectionStats(items: any[]) {
     });
 
     // Category breakdown
-    const categories = items.reduce((acc: any, item) => {
+    const categories = items.reduce((acc: Record<string, number>, item) => {
       acc[item.category] = (acc[item.category] || 0) + (item.current_value || item.cost_price || 0);
       return acc;
-    }, {});
+    }, {} as Record<string, number>);
 
-    const categoryData = Object.entries(categories).map(([name, value]) => ({ name, value }));
+    const categoryData: BreakdownData[] = Object.entries(categories).map(([name, value]) => ({ name, value }));
 
     // Manufacturer breakdown
-    const manufacturers = items.reduce((acc: any, item) => {
-      const m = item.properties?.manufacturer || "Other";
+    const manufacturers = items.reduce((acc: Record<string, number>, item) => {
+      const m = (item.properties?.manufacturer as string) || "Other";
       acc[m] = (acc[m] || 0) + (item.current_value || item.cost_price || 0);
       return acc;
-    }, {});
+    }, {} as Record<string, number>);
 
-    const manufacturerData = Object.entries(manufacturers)
+    const manufacturerData: BreakdownData[] = Object.entries(manufacturers)
       .map(([name, value]) => ({ name, value }))
-      .sort((a: any, b: any) => b.value - a.value)
+      .sort((a, b) => b.value - a.value)
       .slice(0, 5);
 
     return {

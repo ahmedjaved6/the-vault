@@ -5,7 +5,7 @@ export const serviceClient = () => {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url || !key) {
-    return null as any;
+    throw new Error("Missing Supabase Service Role variables");
   }
 
   return createClient(url, key, {

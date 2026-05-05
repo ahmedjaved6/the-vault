@@ -37,7 +37,7 @@ const formSchema = z.object({
   }),
   confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Passwords don&apos;t match",
   path: ["confirmPassword"],
 });
 
@@ -67,7 +67,7 @@ export default function SignUpPage() {
           full_name: values.fullName,
           username: values.username,
         },
-        emailRedirectTo: `${window.location.origin}/signin`,
+        emailRedirectTo: `${window.location.origin}/auth/signin`,
       },
     });
 
@@ -81,7 +81,7 @@ export default function SignUpPage() {
         description: "Please check your email to confirm your account.",
       });
       await new Promise(r => setTimeout(r, 1000));
-      router.push("/signin");
+      router.push("/auth/signin");
     }
   }
 
@@ -89,7 +89,7 @@ export default function SignUpPage() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/callback`,
+        redirectTo: `${window.location.origin}/auth/callback`,
         skipBrowserRedirect: true,
       },
     });
@@ -223,7 +223,7 @@ export default function SignUpPage() {
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center text-sm text-muted-foreground">
-          <Link href="/signin" className="hover:text-midnight dark:hover:text-white underline underline-offset-4">
+          <Link href="/auth/signin" className="hover:text-midnight dark:hover:text-white underline underline-offset-4">
             Already have an account? Sign In
           </Link>
         </CardFooter>

@@ -18,14 +18,14 @@ export default async function AdminUsersPage() {
   // 3. Fetch Item Counts per user
   // We can do this with an aggregate query if we had one, or a separate fetch
   const { data: itemsData } = await supabase.from("collectibles").select("user_id");
-  const itemCounts = itemsData?.reduce((acc: any, item) => {
+  const itemCounts = itemsData?.reduce((acc: any, item: any) => {
     acc[item.user_id] = (acc[item.user_id] || 0) + 1;
     return acc;
   }, {}) || {};
 
   // 4. Merge Data
-  const users = profiles?.map(profile => {
-    const authUser = authUsers.find(u => u.id === profile.id);
+  const users = profiles?.map((profile: any) => {
+    const authUser = authUsers.find((u: any) => u.id === profile.id);
     return {
       ...profile,
       email: authUser?.email,

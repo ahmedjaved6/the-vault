@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     if (items) {
       const pathsToDelete: string[] = [];
-      items.forEach(item => {
+      items.forEach((item: any) => {
         if (item.image_url) {
           const path = item.image_url.split("/storage/v1/object/public/collectible-images/")[1];
           if (path) pathsToDelete.push(path);

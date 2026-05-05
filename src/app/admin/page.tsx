@@ -23,13 +23,13 @@ export default async function AdminOverviewPage() {
   // 2. Fetch Collectible Stats
   const { data: itemsData, error: itemsError } = await supabase.from("collectibles").select("current_value, cost_price");
   const totalItems = itemsData?.length || 0;
-  const totalValue = itemsData?.reduce((acc, item) => acc + (item.current_value || item.cost_price || 0), 0) || 0;
+  const totalValue = itemsData?.reduce((acc: number, item: any) => acc + (Number(item.current_value) || Number(item.cost_price) || 0), 0) || 0;
 
   // 3. Fetch Signups from Auth Admin API
   const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
   
   const now = new Date();
-  const signupData = authUsers?.users?.reduce((acc: any, user) => {
+  const signupData = authUsers?.users?.reduce((acc: any, user: any) => {
     const dateKey = format(new Date(user.created_at), "yyyy-MM-dd");
     acc[dateKey] = (acc[dateKey] || 0) + 1;
     return acc;

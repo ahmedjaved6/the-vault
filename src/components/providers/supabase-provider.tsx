@@ -22,6 +22,8 @@ export default function SupabaseProvider({
   const router = useRouter();
 
   useEffect(() => {
+    if (!supabase) return;
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, newSession) => {
@@ -45,7 +47,7 @@ export default function SupabaseProvider({
   }, []);
 
   return (
-    <Context.Provider value={{ supabase, session }}>
+    <Context.Provider value={{ supabase: supabase!, session }}>
       <div data-hydrated={isHydrated}>
         {children}
       </div>

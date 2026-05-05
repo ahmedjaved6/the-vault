@@ -137,13 +137,13 @@ export default function Home() {
             <DropdownMenuLabel>Choose Category</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/add?category=statue" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/app/add?category=statue" className="flex items-center gap-2 cursor-pointer">
                 <PlusCircle className="h-4 w-4" />
                 <span>Add Statue</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/add?category=figure" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/app/add?category=figure" className="flex items-center gap-2 cursor-pointer">
                 <PlusCircle className="h-4 w-4" />
                 <span>Add Figure</span>
               </Link>

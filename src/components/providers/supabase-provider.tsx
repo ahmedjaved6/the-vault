@@ -24,19 +24,31 @@ export default function SupabaseProvider({
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      router.refresh();
+    } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (newSession?.user?.id !== session?.user?.id) {
+        setSession(newSession);
+        if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+          router.refresh();
+        }
+      }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase, router]);
+  }, [supabase, router, session]);
+
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   return (
     <Context.Provider value={{ supabase, session }}>
-      {children}
+      <div data-hydrated={isHydrated}>
+        {children}
+      </div>
     </Context.Provider>
   );
 }

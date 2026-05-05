@@ -1,9 +1,11 @@
+// @ts-ignore
 import withPWA from "next-pwa";
 import type { NextConfig } from "next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  allowedDevOrigins: ["localhost", "127.0.0.1"],
   images: {
     remotePatterns: [
       {
@@ -13,6 +15,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    return config;
+  }
 };
 
 const pwaConfig = withPWA({

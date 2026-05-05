@@ -61,6 +61,18 @@ export default function SearchPage() {
     return () => clearTimeout(timeout);
   }, [supabase, session]);
 
+  const filteredItems = useMemo(() => {
+    return items.filter(item => {
+      const matchesSearch = (item.name?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+                          (item.properties?.manufacturer?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+                          (item.properties?.series_name?.toLowerCase() || "").includes(searchQuery.toLowerCase());
+      
+      const matchesCategory = categoryFilter === "all" || item.category === categoryFilter;
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [items, searchQuery, categoryFilter]);
+
   if (loading) {
     return (
       <div className="space-y-8 pb-10">
@@ -80,18 +92,6 @@ export default function SearchPage() {
       </div>
     );
   }
-
-  const filteredItems = useMemo(() => {
-    return items.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.properties?.manufacturer?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.properties?.series_name?.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesCategory = categoryFilter === "all" || item.category === categoryFilter;
-      
-      return matchesSearch && matchesCategory;
-    });
-  }, [items, searchQuery, categoryFilter]);
 
   return (
     <div className="space-y-8 pb-10">

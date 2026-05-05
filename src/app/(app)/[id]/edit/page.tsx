@@ -29,7 +29,7 @@ export default function EditItemPage() {
 
       if (error) {
         toast.error("Item not found");
-        router.push("/app");
+        router.push("/");
         return;
       }
 

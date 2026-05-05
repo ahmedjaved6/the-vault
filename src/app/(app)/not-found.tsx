@@ -12,7 +12,7 @@ export default function AppNotFound() {
         The item you're looking for doesn't exist or was deleted from your vault.
       </p>
       <Link 
-        href="/app" 
+        href="/" 
         className="text-coral hover:text-coral/80 underline underline-offset-4 font-medium"
       >
         Back to collection

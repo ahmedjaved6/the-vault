@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = requestUrl.searchParams.get("next") ?? "/app";
+  const next = requestUrl.searchParams.get("next") ?? "/";
 
   if (code) {
     const cookieStore = await cookies();
@@ -34,6 +34,6 @@ export async function GET(request: Request) {
 
   // If something went wrong, redirect to sign-in with error
   return NextResponse.redirect(
-    new URL("/auth/signin?error=oauth", requestUrl.origin)
+    new URL("/signin?error=oauth", requestUrl.origin)
   );
 }

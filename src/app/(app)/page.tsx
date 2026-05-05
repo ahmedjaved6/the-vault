@@ -137,13 +137,13 @@ export default function Home() {
             <DropdownMenuLabel>Choose Category</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/app/add?category=statue" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/add?category=statue" className="flex items-center gap-2 cursor-pointer">
                 <PlusCircle className="h-4 w-4" />
                 <span>Add Statue</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/app/add?category=figure" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/add?category=figure" className="flex items-center gap-2 cursor-pointer">
                 <PlusCircle className="h-4 w-4" />
                 <span>Add Figure</span>
               </Link>
@@ -233,7 +233,7 @@ export default function Home() {
             Start cataloging your collectibles to track their value and manage your portfolio.
           </p>
           <Button asChild className="mt-8 bg-midnight text-white hover:bg-midnight/90 dark:bg-white dark:text-midnight">
-            <Link href="/app/add">
+            <Link href="/add">
               <PlusCircle className="mr-2 h-4 w-4" />
               Add your first collectible
             </Link>
@@ -244,7 +244,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-heading font-bold text-midnight dark:text-white">Recently Added</h2>
             <Button variant="ghost" asChild className="text-coral hover:text-coral hover:bg-coral/5">
-              <Link href="/app/collectibles" className="flex items-center">
+              <Link href="/collectibles" className="flex items-center">
                 View all <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

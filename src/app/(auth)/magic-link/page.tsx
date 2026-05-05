@@ -32,7 +32,7 @@ export default function MagicLinkPage() {
           </Button>
         </CardContent>
         <CardFooter className="flex justify-center border-t pt-6">
-          <Link href="/auth/signin" className="flex items-center text-sm text-muted-foreground hover:text-midnight dark:hover:text-white transition-colors">
+          <Link href="/signin" className="flex items-center text-sm text-muted-foreground hover:text-midnight dark:hover:text-white transition-colors">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Sign In
           </Link>

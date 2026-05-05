@@ -49,7 +49,7 @@ export default function UpdatePasswordPage() {
         description: "Your password has been changed successfully.",
       });
       setTimeout(() => {
-        router.push("/app");
+        router.push("/");
       }, 2000);
     }
   };

@@ -91,7 +91,7 @@ export default function ForgotPasswordPage() {
                 If an account exists for <strong>{email}</strong>, you will receive an email with instructions on how to reset your password shortly.
               </p>
               <Button variant="outline" className="w-full" asChild>
-                <Link href="/auth/signin">
+                <Link href="/signin">
                   Return to Sign In
                 </Link>
               </Button>
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
         {!isSent && (
           <CardFooter>
             <Button variant="ghost" className="w-full" asChild>
-              <Link href="/auth/signin" className="flex items-center">
+              <Link href="/signin" className="flex items-center">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Sign In
               </Link>

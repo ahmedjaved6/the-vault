@@ -69,7 +69,7 @@ export default function ItemDetailPage() {
 
       if (error) {
         toast.error("Item not found");
-        router.push("/app");
+        router.push("/");
         return;
       }
 
@@ -98,7 +98,7 @@ export default function ItemDetailPage() {
       if (error) throw error;
 
       toast.success("Item removed from vault");
-      router.push("/app");
+      router.push("/");
     } catch (error: any) {
       toast.error(error.message);
       setIsDeleting(false);

@@ -2,6 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function RootPage() {
   const cookieStore = await cookies();
   const supabase = createServerClient(
@@ -23,11 +25,12 @@ export default async function RootPage() {
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
 
-  if (user) {
-    redirect("/app");
-  } else {
+  if (error || !user) {
     redirect("/auth/signin");
+  } else {
+    redirect("/app");
   }
 }

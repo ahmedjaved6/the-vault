@@ -36,6 +36,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
       </head>
       <body className={`${inter.variable} ${plusJakartaSans.variable} antialiased`}>
         <ThemeProvider
